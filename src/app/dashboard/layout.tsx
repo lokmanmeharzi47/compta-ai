@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
@@ -17,53 +18,53 @@ import {
   Bell,
   HelpCircle,
   Menu,
-  X
+  X,
+  ArrowRightLeft,
+  Landmark,
+  CreditCard,
+  FileSignature,
+  Users,
+  WalletCards,
+  Shield,
+  Briefcase
 } from "lucide-react";
 
 // Sleek Abstract Geometric Logo
 const LogoIcon = () => (
-  <svg viewBox="0 0 32 32" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="logo-g1" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#0054d6" />
-        <stop offset="100%" stopColor="#4b41e1" />
-      </linearGradient>
-      <linearGradient id="logo-g2" x1="100%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stopColor="#00f5d4" />
-        <stop offset="100%" stopColor="#0054d6" />
-      </linearGradient>
-    </defs>
-    <path
-      d="M14 6C9.58 6 6 9.58 6 14c0 3.31 2.01 6.16 4.88 7.37L15 15.5l-4.12-4.12A3.99 3.99 0 0114 10c1.1 0 2.09.45 2.83 1.17l3.54-3.54A7.95 7.95 0 0014 6z"
-      fill="url(#logo-g1)"
-    />
-    <path
-      d="M18 26c4.42 0 8-3.58 8-8 0-3.31-2.01-6.16-4.88-7.37L17 16.5l4.12 4.12A3.99 3.99 0 0118 22c-1.1 0-2.09-.45-2.83-1.17l-3.54 3.54A7.95 7.95 0 0018 26z"
-      fill="url(#logo-g2)"
-    />
-    <circle
-      cx="16"
-      cy="16"
-      r="3"
-      fill="#FFFFFF"
-    />
-    <circle
-      cx="16"
-      cy="16"
-      r="2"
-      fill="url(#logo-g1)"
-    />
-  </svg>
+  <Image 
+    src="/logo.png" 
+    alt="Compta AI Logo" 
+    width={128} 
+    height={128} 
+    className="w-full h-full object-contain"
+    priority
+  />
 );
 
-const sidebarLinks = [
+const adminLinks = [
+  { name: "Admin Panel", href: "/dashboard/admin", icon: Shield },
+  { name: "User Management", href: "/dashboard/users", icon: Users },
+  { name: "Settings", href: "/dashboard/settings", icon: Settings },
+];
+
+const accountantLinks = [
+  { name: "Accountant Portal", href: "/dashboard/accountant", icon: Briefcase },
+  { name: "Settings", href: "/dashboard/settings", icon: Settings },
+];
+
+const userLinks = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Accounts", href: "/dashboard/accounts", icon: Landmark },
+  { name: "Credit & Debt", href: "/dashboard/credits-debts", icon: CreditCard },
   { name: "Sales", href: "/dashboard/sales", icon: Banknote },
   { name: "Expenses", href: "/dashboard/expenses", icon: Receipt },
+  { name: "Cash Flow", href: "/dashboard/cash-flow", icon: ArrowRightLeft },
   { name: "Invoices", href: "/dashboard/invoices", icon: FileText },
   { name: "Inventory", href: "/dashboard/inventory", icon: Package },
   { name: "Payroll", href: "/dashboard/payroll", icon: Coins },
   { name: "Reports", href: "/dashboard/reports", icon: BarChart3 },
+  { name: "Declarations", href: "/dashboard/declarations", icon: FileSignature },
+  { name: "Revenue & Earnings", href: "/dashboard/revenue", icon: WalletCards },
   { name: "AI Assistant", href: "/dashboard/assistant", icon: Bot },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
@@ -75,6 +76,13 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  let currentLinks = userLinks;
+  if (pathname.startsWith('/dashboard/admin') || pathname.startsWith('/dashboard/users')) {
+    currentLinks = adminLinks;
+  } else if (pathname.startsWith('/dashboard/accountant')) {
+    currentLinks = accountantLinks;
+  }
 
   return (
     <div className="min-h-screen bg-[#f8f9ff]">
@@ -119,7 +127,7 @@ export default function DashboardLayout({
         </div>
 
         <nav className="flex-1 space-y-2 overflow-y-auto">
-          {sidebarLinks.map((link) => {
+          {currentLinks.map((link) => {
             const isActive = pathname === link.href;
             const Icon = link.icon;
             return (

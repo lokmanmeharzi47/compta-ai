@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -24,38 +25,14 @@ import {
 
 // Sleek Abstract Geometric Logo
 const LogoIcon = () => (
-  <svg viewBox="0 0 32 32" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="logo-g1" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#0054d6" />
-        <stop offset="100%" stopColor="#4b41e1" />
-      </linearGradient>
-      <linearGradient id="logo-g2" x1="100%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stopColor="#00f5d4" />
-        <stop offset="100%" stopColor="#0054d6" />
-      </linearGradient>
-    </defs>
-    <path
-      d="M14 6C9.58 6 6 9.58 6 14c0 3.31 2.01 6.16 4.88 7.37L15 15.5l-4.12-4.12A3.99 3.99 0 0114 10c1.1 0 2.09.45 2.83 1.17l3.54-3.54A7.95 7.95 0 0014 6z"
-      fill="url(#logo-g1)"
-    />
-    <path
-      d="M18 26c4.42 0 8-3.58 8-8 0-3.31-2.01-6.16-4.88-7.37L17 16.5l4.12 4.12A3.99 3.99 0 0118 22c-1.1 0-2.09-.45-2.83-1.17l-3.54 3.54A7.95 7.95 0 0018 26z"
-      fill="url(#logo-g2)"
-    />
-    <circle
-      cx="16"
-      cy="16"
-      r="3"
-      fill="#FFFFFF"
-    />
-    <circle
-      cx="16"
-      cy="16"
-      r="2"
-      fill="url(#logo-g1)"
-    />
-  </svg>
+  <Image
+    src="/logo.png"
+    alt="Compta AI Logo"
+    width={128}
+    height={128}
+    className="w-full h-full object-contain"
+    priority
+  />
 );
 
 export default function Home() {
@@ -498,41 +475,15 @@ export default function Home() {
               <h2 className="font-display-lg text-4xl mb-4 font-bold text-on-surface">Scalable Plans for Every Stage</h2>
               <p className="text-on-surface-variant text-lg">From garage startup to global enterprise, choose the intelligence tier that fits your growth velocity.</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Starter */}
-              <div className="glass-card p-10 rounded-[32px] flex flex-col items-center text-center border border-white/60 bg-white/70 backdrop-blur-md shadow-md">
-                <span className="font-label-caps text-xs text-on-surface-variant mb-4 font-bold tracking-widest uppercase">STARTER</span>
-                <div className="flex items-baseline gap-1 mb-8">
-                  <span className="text-4xl font-display-lg font-bold text-on-surface">200 DZD</span>
-                  <span className="text-on-surface-variant">/mo</span>
-                </div>
-                <ul className="w-full space-y-4 mb-10 text-on-surface-variant text-sm">
-                  <li className="flex items-center gap-2 justify-center">
-                    <Check className="w-4 h-4 text-primary shrink-0" strokeWidth={1.5} />
-                    Basic AI Assistant
-                  </li>
-                  <li className="flex items-center gap-2 justify-center">
-                    <Check className="w-4 h-4 text-primary shrink-0" strokeWidth={1.5} />
-                    Real-time Reconciliation
-                  </li>
-                  <li className="flex items-center gap-2 justify-center">
-                    <Check className="w-4 h-4 text-primary shrink-0" strokeWidth={1.5} />
-                    Up to 500 Transactions
-                  </li>
-                </ul>
-                <Link href="/register" className="w-full py-4 rounded-xl border border-outline-variant/40 font-bold hover:bg-surface-container-high transition-colors text-on-surface">
-                  Select Starter
-                </Link>
-              </div>
-
+            <div className="flex justify-center max-w-md mx-auto">
               {/* Professional */}
-              <div className="glass-card p-10 rounded-[32px] flex flex-col items-center text-center border border-primary/20 bg-white shadow-2xl scale-105 relative z-10">
+              <div className="glass-card p-10 rounded-[32px] w-full flex flex-col items-center text-center border border-primary/20 bg-white shadow-2xl relative z-10">
                 <div className="absolute -top-4 px-4 py-1 rounded-full bg-gradient-to-r from-primary to-secondary text-white text-[10px] font-black tracking-widest uppercase">
                   MOST POPULAR
                 </div>
                 <span className="font-label-caps text-xs text-primary mb-4 font-bold tracking-widest uppercase">PROFESSIONAL</span>
                 <div className="flex items-baseline gap-1 mb-8">
-                  <span className="text-5xl font-display-lg font-bold text-primary">500 DZD</span>
+                  <span className="text-5xl font-display-lg font-bold text-primary">2500 DZD</span>
                   <span className="text-on-surface-variant">/mo</span>
                 </div>
                 <ul className="w-full space-y-4 mb-10 text-on-surface text-sm font-medium">
@@ -556,31 +507,9 @@ export default function Home() {
                 <Link href="/register" className="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-xl shadow-primary/30 hover:scale-105 transition-transform">
                   Get Started Pro
                 </Link>
-              </div>
-
-              {/* Enterprise */}
-              <div className="glass-card p-10 rounded-[32px] flex flex-col items-center text-center border border-white/60 bg-white/70 backdrop-blur-md shadow-md">
-                <span className="font-label-caps text-xs text-on-surface-variant mb-4 font-bold tracking-widest uppercase">ENTERPRISE</span>
-                <div className="flex items-baseline gap-1 mb-8">
-                  <span className="text-4xl font-display-lg font-bold text-on-surface">Custom</span>
+                <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 rounded-full font-bold text-xs uppercase tracking-wider">
+                  🎉 1-Day Free Trial
                 </div>
-                <ul className="w-full space-y-4 mb-10 text-on-surface-variant text-sm">
-                  <li className="flex items-center gap-2 justify-center">
-                    <Check className="w-4 h-4 text-primary shrink-0" strokeWidth={1.5} />
-                    Custom LLM Training
-                  </li>
-                  <li className="flex items-center gap-2 justify-center">
-                    <Check className="w-4 h-4 text-primary shrink-0" strokeWidth={1.5} />
-                    Dedicated Account Manager
-                  </li>
-                  <li className="flex items-center gap-2 justify-center">
-                    <Check className="w-4 h-4 text-primary shrink-0" strokeWidth={1.5} />
-                    White-glove Onboarding
-                  </li>
-                </ul>
-                <Link href="/register" className="w-full py-4 rounded-xl border border-outline-variant/40 font-bold hover:bg-surface-container-high transition-colors text-on-surface">
-                  Contact Sales
-                </Link>
               </div>
             </div>
           </div>

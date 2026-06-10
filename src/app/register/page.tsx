@@ -1,48 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   ShieldCheck,
   Sparkles,
-  Apple,
   Eye
 } from "lucide-react";
 
 // Sleek Abstract Geometric Logo
 const LogoIcon = () => (
-  <svg viewBox="0 0 32 32" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="logo-g1" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#0054d6" />
-        <stop offset="100%" stopColor="#4b41e1" />
-      </linearGradient>
-      <linearGradient id="logo-g2" x1="100%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stopColor="#00f5d4" />
-        <stop offset="100%" stopColor="#0054d6" />
-      </linearGradient>
-    </defs>
-    <path
-      d="M14 6C9.58 6 6 9.58 6 14c0 3.31 2.01 6.16 4.88 7.37L15 15.5l-4.12-4.12A3.99 3.99 0 0114 10c1.1 0 2.09.45 2.83 1.17l3.54-3.54A7.95 7.95 0 0014 6z"
-      fill="url(#logo-g1)"
-    />
-    <path
-      d="M18 26c4.42 0 8-3.58 8-8 0-3.31-2.01-6.16-4.88-7.37L17 16.5l4.12 4.12A3.99 3.99 0 0118 22c-1.1 0-2.09-.45-2.83-1.17l-3.54 3.54A7.95 7.95 0 0018 26z"
-      fill="url(#logo-g2)"
-    />
-    <circle
-      cx="16"
-      cy="16"
-      r="3"
-      fill="#FFFFFF"
-    />
-    <circle
-      cx="16"
-      cy="16"
-      r="2"
-      fill="url(#logo-g1)"
-    />
-  </svg>
+  <Image 
+    src="/logo.png" 
+    alt="Compta AI Logo" 
+    width={128} 
+    height={128} 
+    className="w-full h-full object-contain"
+    priority
+  />
 );
 
 export default function RegisterPage() {
