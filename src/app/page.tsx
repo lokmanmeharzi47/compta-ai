@@ -508,7 +508,7 @@ export default function Home() {
                   Get Started Pro
                 </Link>
                 <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 rounded-full font-bold text-xs uppercase tracking-wider">
-                  🎉 1-Day Free Trial
+                  14-Day Free Trial
                 </div>
               </div>
             </div>
