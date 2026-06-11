@@ -65,6 +65,24 @@ body {
   font-family: var(--font-body-md);
 }
 
+/* ── Arabic / RTL typography ──────────────────────────────────────────────
+   Tailwind v4 font utilities resolve `var(--font-*)`, so re-pointing those
+   variables under [dir="rtl"] swaps the entire app to the Arabic typeface
+   (Cairo) without touching any markup. Latin digits keep the mono font. */
+[dir="rtl"] {
+  --font-display-lg: var(--font-arabic), "Hanken Grotesk", sans-serif;
+  --font-headline-lg: var(--font-arabic), "Hanken Grotesk", sans-serif;
+  --font-headline-lg-mobile: var(--font-arabic), "Hanken Grotesk", sans-serif;
+  --font-title-md: var(--font-arabic), "Hanken Grotesk", sans-serif;
+  --font-body-md: var(--font-arabic), "Inter", sans-serif;
+  --font-body-sm: var(--font-arabic), "Inter", sans-serif;
+  --font-label-caps: var(--font-arabic), "Inter", sans-serif;
+}
+
+[dir="rtl"] body {
+  font-family: var(--font-arabic), "Inter", sans-serif;
+}
+
 /* Glassmorphism card utility */
 .glass-card {
   background: rgba(255, 255, 255, 0.7);

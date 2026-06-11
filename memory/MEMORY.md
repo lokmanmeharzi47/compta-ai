@@ -1,0 +1,2 @@
+- [Next.js 16 proxy rename](nextjs16-proxy.md) — middleware.ts is renamed to proxy.ts in this project's Next 16.2.6
+- [Compta AI i18n](compta-ai-i18n.md) — bilingual FR/AR via next-intl, [locale] routing, RTL for Arabic
