@@ -76,6 +76,18 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+
+  let roleKey = "administrator";
+  let nameKey = "userName";
+
+  if (pathname.includes("/dashboard/trader")) {
+    roleKey = "trader";
+    nameKey = "traderName";
+  } else if (pathname.includes("/dashboard/accountant")) {
+    roleKey = "accountant";
+    nameKey = "accountantName";
+  }
+
   const t = useTranslations("dashboard");
   const tCommon = useTranslations("common");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -110,9 +122,8 @@ export default function DashboardLayout({
 
       {/* Sidebar Navigation */}
       <aside
-        className={`fixed top-0 start-0 h-full w-64 bg-white/80 backdrop-blur-xl border-e border-white/20 shadow-[0_40px_60px_-15px_rgba(0,84,214,0.1)] flex flex-col p-6 z-50 transform transition-transform duration-300 md:translate-x-0 md:rtl:translate-x-0 ${
-          mobileMenuOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"
-        }`}
+        className={`fixed top-0 start-0 h-full w-64 bg-white/80 backdrop-blur-xl border-e border-white/20 shadow-[0_40px_60px_-15px_rgba(0,84,214,0.1)] flex flex-col p-6 z-50 transform transition-transform duration-300 md:translate-x-0 md:rtl:translate-x-0 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"
+          }`}
       >
         <div className="mb-10 px-2 flex justify-between items-center text-[#121c2a]">
           <div className="flex items-center gap-3">
@@ -141,11 +152,10 @@ export default function DashboardLayout({
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 active:scale-95 ${
-                  isActive
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 active:scale-95 ${isActive
                     ? "text-primary font-bold bg-primary/10 relative before:content-[''] before:absolute before:start-0 before:w-1 before:h-8 before:bg-primary before:rounded-full"
                     : "text-on-surface-variant hover:text-primary hover:bg-white/10 hover:backdrop-blur-md"
-                }`}
+                  }`}
               >
                 <Icon className="w-5 h-5 shrink-0" strokeWidth={1.5} />
                 <span className="font-body-md text-sm">{t(`nav.${link.key}`)}</span>
@@ -154,11 +164,6 @@ export default function DashboardLayout({
           })}
         </nav>
 
-        <div className="mt-auto pt-6 border-t border-outline-variant/30 space-y-4">
-          <button className="w-full py-3 px-4 bg-primary text-white rounded-xl font-bold transition-transform active:scale-95 shadow-lg shadow-primary/20 hover:scale-[1.02] cursor-pointer">
-            {t("upgradeToPro")}
-          </button>
-        </div>
       </aside>
 
       {/* Main Content Layout */}
@@ -181,9 +186,9 @@ export default function DashboardLayout({
             <HelpCircle className="hover:text-primary cursor-pointer transition-colors w-5 h-5" strokeWidth={1.5} />
             <div className="flex items-center gap-3 ms-2 border-s border-outline-variant/30 ps-6">
               <div className="text-end">
-                <p className="font-title-md text-sm font-bold text-primary">{t("userName")}</p>
+                <p className="font-title-md text-sm font-bold text-primary">{t(nameKey)}</p>
                 <p className="text-[10px] font-label-caps text-on-surface-variant uppercase tracking-wider">
-                  {t("administrator")}
+                  {t(roleKey)}
                 </p>
               </div>
               <img
