@@ -6,6 +6,7 @@ import {
   UserPlus,
   Play,
   Wallet,
+  TrendingUp,
   Calendar,
   Users,
   Scale,
@@ -113,11 +114,11 @@ export default function PayrollPage() {
         <div className="glass-card beveled-edge p-6 rounded-3xl bg-white/70">
           <div className="flex items-center justify-between mb-4">
             <div className="w-12 h-12 bg-secondary/10 rounded-2xl flex items-center justify-center text-secondary">
-              <Calendar className="w-6 h-6" />
+              <TrendingUp className="w-6 h-6" />
             </div>
           </div>
           <p className="text-on-surface-variant font-label-caps uppercase text-[10px] tracking-widest mb-1">{t("nextPayDate")}</p>
-          <h3 className="text-2xl font-bold text-on-background">Oct 31</h3>
+          <h3 className="text-2xl font-bold text-on-background">26%</h3>
         </div>
 
         <div className="glass-card beveled-edge p-6 rounded-3xl bg-white/70">
@@ -148,7 +149,7 @@ export default function PayrollPage() {
         {/* {t("payrollBreakdown")} Chart */}
         <div className="lg:col-span-2 glass-card beveled-edge p-8 rounded-3xl relative overflow-hidden bg-white/70 flex flex-col justify-between min-h-[380px]">
           <div className="flex justify-between items-center mb-10">
-            <h4 className="font-bold text-lg text-on-background">Payroll Breakdown</h4>
+            <h4 className="font-bold text-lg text-on-background">Répartition de la paie</h4>
             <div className="flex items-center gap-4 text-xs font-bold text-on-surface-variant">
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-primary"></span> {t("salaries")}
@@ -167,25 +168,25 @@ export default function PayrollPage() {
               <div className="w-16 bg-primary/20 rounded-t-xl h-[85%] relative overflow-hidden">
                 <div className="absolute bottom-0 w-full h-[85%] bg-primary rounded-t-xl shadow-lg shadow-primary/20"></div>
               </div>
-              <span className="mt-4 font-label-caps text-xs text-outline font-bold">Q1</span>
+              <span className="mt-4 font-label-caps text-xs text-outline font-bold">T1</span>
             </div>
             <div className="w-full flex flex-col items-center group h-full justify-end">
               <div className="w-16 bg-primary/20 rounded-t-xl h-[90%] relative overflow-hidden">
                 <div className="absolute bottom-0 w-full h-[90%] bg-primary rounded-t-xl"></div>
               </div>
-              <span className="mt-4 font-label-caps text-xs text-outline font-bold">Q2</span>
+              <span className="mt-4 font-label-caps text-xs text-outline font-bold">T2</span>
             </div>
             <div className="w-full flex flex-col items-center group h-full justify-end">
               <div className="w-16 bg-primary/20 rounded-t-xl h-[80%] relative overflow-hidden">
                 <div className="absolute bottom-0 w-full h-[80%] bg-primary rounded-t-xl"></div>
               </div>
-              <span className="mt-4 font-label-caps text-xs text-outline font-bold">Q3</span>
+              <span className="mt-4 font-label-caps text-xs text-outline font-bold">T3</span>
             </div>
             <div className="w-full flex flex-col items-center group h-full justify-end">
               <div className="w-16 bg-primary/20 rounded-t-xl h-[95%] relative overflow-hidden">
                 <div className="absolute bottom-0 w-full h-[95%] bg-primary rounded-t-xl"></div>
               </div>
-              <span className="mt-4 font-label-caps text-xs text-outline font-bold">Q4</span>
+              <span className="mt-4 font-label-caps text-xs text-outline font-bold">T4</span>
             </div>
           </div>
         </div>

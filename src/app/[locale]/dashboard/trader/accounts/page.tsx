@@ -32,7 +32,7 @@ export default function AccountsLedgerPage() {
   // Mock data — numbers/refs are locale-neutral; status/type/name use keys.
   const accounts = [
     { id: "A1", typeKey: "bank", nameKey: "cpaMain", balance: "2,450,000 DZD", statusKey: "active", number: "**** 4492" },
-    { id: "A2", typeKey: "bank", nameKey: "beaEur", balance: "15,200 EUR", statusKey: "active", number: "**** 1102" },
+    { id: "A2", typeKey: "bank", nameKey: "beaEur", balance: "15,200 DZD", statusKey: "active", number: "**** 1102" },
     { id: "A3", typeKey: "cash", nameKey: "cashRegister", balance: "120,500 DZD", statusKey: "active", number: "CASH-01" },
   ];
 

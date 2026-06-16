@@ -29,7 +29,7 @@ export default function RegisterPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push("/dashboard");
+    router.push("/onboarding");
   };
 
   return (
@@ -95,7 +95,7 @@ export default function RegisterPage() {
           <div className="grid grid-cols-2 gap-4 mb-4">
             <button
               type="button"
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push("/onboarding")}
               className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-outline-variant bg-white/50 hover:bg-white transition-all font-body-sm text-sm font-bold text-on-surface cursor-pointer"
             >
               <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -108,7 +108,7 @@ export default function RegisterPage() {
             </button>
             <button
               type="button"
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push("/onboarding")}
               className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-outline-variant bg-white/50 hover:bg-white transition-all font-body-sm text-sm font-bold text-on-surface cursor-pointer"
             >
               <svg className="w-5 h-5 shrink-0 fill-current text-on-surface" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

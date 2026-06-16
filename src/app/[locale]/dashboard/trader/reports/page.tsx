@@ -8,11 +8,14 @@ import {
   Share2,
   Sparkles,
   Filter,
-  MoreVertical
+  MoreVertical,
+  Upload,
+  ChevronDown
 } from "lucide-react";
 
 export default function ReportsPage() {
   const t = useTranslations("reportsPage");
+  const [showImportDropdown, setShowImportDropdown] = useState(false);
   const [data, setData] = useState({
     revenueGross: 452300.0,
     revenueAdjust: -2300.0,
@@ -51,7 +54,40 @@ export default function ReportsPage() {
           <h2 className="font-headline-lg text-3xl font-bold text-on-surface">{t("title")}</h2>
           <p className="text-body-md text-on-surface-variant">{t("subtitle")}</p>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3 relative">
+          <div className="relative">
+            <button 
+              onClick={() => setShowImportDropdown(!showImportDropdown)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-outline-variant/40 bg-white/50 font-medium text-on-surface-variant hover:bg-white hover:text-primary transition-all cursor-pointer">
+              <Upload className="w-4 h-4" />
+              {t("btnImport")}
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showImportDropdown ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {showImportDropdown && (
+              <>
+                <div 
+                  className="fixed inset-0 z-40" 
+                  onClick={() => setShowImportDropdown(false)}
+                />
+                <div className="absolute left-0 mt-2 w-48 bg-white border border-outline-variant/30 rounded-xl shadow-lg overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
+                  <button 
+                    onClick={() => setShowImportDropdown(false)}
+                    className="w-full text-start px-4 py-3 text-sm font-medium text-on-surface hover:bg-surface-container transition-colors cursor-pointer flex items-center gap-2">
+                    <FileSpreadsheet className="w-4 h-4 text-secondary" />
+                    {t("btnImportBilan")}
+                  </button>
+                  <button 
+                    onClick={() => setShowImportDropdown(false)}
+                    className="w-full text-start px-4 py-3 text-sm font-medium text-on-surface hover:bg-surface-container transition-colors border-t border-outline-variant/20 cursor-pointer flex items-center gap-2">
+                    <FileSpreadsheet className="w-4 h-4 text-tertiary" />
+                    {t("btnImportTcr")}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+
           <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-outline-variant/40 bg-white/50 font-medium text-on-surface-variant hover:bg-white hover:text-primary transition-all cursor-pointer">
             <Download className="w-4 h-4" />
             {t("exportPdf")}
@@ -73,7 +109,7 @@ export default function ReportsPage() {
         <div className="col-span-12 lg:col-span-8 glass-card beveled-edge rounded-3xl p-8 relative overflow-hidden bg-white/70 min-h-[380px] flex flex-col justify-between">
           <div className="flex justify-between items-center mb-10">
             <div>
-              <h3 className="font-title-md text-lg font-bold text-on-surface">Net Income Trend</h3>
+              <h3 className="font-title-md text-lg font-bold text-on-surface">Évolution du Résultat Net</h3>
               <p className="text-xs text-on-surface-variant">{t("monthlyOverview")}</p>
             </div>
             <div className="flex gap-4 text-xs font-bold text-on-surface-variant">

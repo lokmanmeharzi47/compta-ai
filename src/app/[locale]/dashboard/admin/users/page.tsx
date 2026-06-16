@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   Users,
   ShieldAlert,
@@ -16,22 +17,23 @@ import {
 } from "lucide-react";
 
 export default function UserManagementPage() {
+  const t = useTranslations("userManagement");
   const [searchQuery, setSearchQuery] = useState("");
 
   const users = [
-    { id: "U1", name: "Alex Sterling", email: "alex@compta.ai", role: "Admin", status: "Active", lastLogin: "2 mins ago" },
-    { id: "U2", name: "Ahmed Benali", email: "ahmed.b@merchant.com", role: "Trader", status: "Active", lastLogin: "1 hour ago" },
-    { id: "U3", name: "Sarah Expert", email: "sarah@expert-comptable.dz", role: "Accountant", status: "Active", lastLogin: "5 hours ago" },
-    { id: "U4", name: "Karim Logistics", email: "karim@logistics.dz", role: "Trader", status: "Inactive", lastLogin: "2 days ago" },
+    { id: "U1", name: "Alex Sterling", email: "alex@compta.ai", role: t("roleAdmin"), status: t("statusActive"), lastLogin: t("time2mins") },
+    { id: "U2", name: "Ahmed Benali", email: "ahmed.b@merchant.com", role: t("roleTrader"), status: t("statusActive"), lastLogin: t("time1hour") },
+    { id: "U3", name: "Sarah Expert", email: "sarah@expert-comptable.dz", role: t("roleAccountant"), status: t("statusActive"), lastLogin: t("time5hours") },
+    { id: "U4", name: "Karim Logistics", email: "karim@logistics.dz", role: t("roleTrader"), status: t("statusInactive"), lastLogin: t("time2days") },
   ];
 
   const permissions = [
-    { feature: "Sales & Expenses Management", trader: true, accountant: "read", admin: true },
-    { feature: "Inventory & Invoices", trader: true, accountant: "read", admin: true },
-    { feature: "Financial Reports", trader: true, accountant: true, admin: true },
-    { feature: "Declaration Review & Approval", trader: false, accountant: true, admin: true },
-    { feature: "User & Role Management", trader: false, accountant: false, admin: true },
-    { feature: "System Settings", trader: false, accountant: false, admin: true },
+    { feature: t("featSalesExpenses"), trader: true, accountant: "read", admin: true },
+    { feature: t("featInventoryInvoices"), trader: true, accountant: "read", admin: true },
+    { feature: t("featFinancialReports"), trader: true, accountant: true, admin: true },
+    { feature: t("featDeclarationReview"), trader: false, accountant: true, admin: true },
+    { feature: t("featUserRoleMgmt"), trader: false, accountant: false, admin: true },
+    { feature: t("featSystemSettings"), trader: false, accountant: false, admin: true },
   ];
 
   const renderPermission = (val: boolean | string) => {
@@ -50,12 +52,12 @@ export default function UserManagementPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
-          <h2 className="font-headline-lg text-3xl font-bold text-on-surface">User Management</h2>
-          <p className="text-body-md text-on-surface-variant">Role-Based Access Control (RBAC) and system permissions.</p>
+          <h2 className="font-headline-lg text-3xl font-bold text-on-surface">{t("title")}</h2>
+          <p className="text-body-md text-on-surface-variant">{t("subtitle")}</p>
         </div>
         <button className="flex items-center gap-2 px-6 py-3 bg-primary text-on-primary rounded-xl font-bold hover:bg-primary-container transition-all cursor-pointer">
           <UserPlus className="w-5 h-5" />
-          Invite User
+          {t("inviteUser")}
         </button>
       </div>
 
@@ -66,9 +68,9 @@ export default function UserManagementPage() {
             <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
               <Users className="w-6 h-6" />
             </div>
-            <span className="text-primary font-bold text-xs bg-primary/10 px-2 py-1 rounded-lg">All Active</span>
+            <span className="text-primary font-bold text-xs bg-primary/10 px-2 py-1 rounded-lg">{t("allActive")}</span>
           </div>
-          <p className="text-body-sm text-on-surface-variant font-medium">Total Users</p>
+          <p className="text-body-sm text-on-surface-variant font-medium">{t("totalUsers")}</p>
           <p className="text-3xl font-bold text-on-surface">1,248</p>
         </div>
 
@@ -78,7 +80,7 @@ export default function UserManagementPage() {
               <ShieldAlert className="w-6 h-6" />
             </div>
           </div>
-          <p className="text-body-sm text-on-surface-variant font-medium">Active Traders</p>
+          <p className="text-body-sm text-on-surface-variant font-medium">{t("activeTraders")}</p>
           <p className="text-3xl font-bold text-on-surface">1,102</p>
         </div>
 
@@ -88,7 +90,7 @@ export default function UserManagementPage() {
               <ShieldCheck className="w-6 h-6" />
             </div>
           </div>
-          <p className="text-body-sm text-on-surface-variant font-medium">Certified Accountants</p>
+          <p className="text-body-sm text-on-surface-variant font-medium">{t("certifiedAccountants")}</p>
           <p className="text-3xl font-bold text-on-surface">142</p>
         </div>
       </div>
@@ -98,12 +100,12 @@ export default function UserManagementPage() {
         {/* User Directory */}
         <div className="lg:col-span-2 glass-card beveled-edge rounded-3xl overflow-hidden bg-white/40">
           <div className="px-6 py-5 border-b border-outline-variant/30 bg-white/40 flex justify-between items-center">
-            <h3 className="font-title-md text-lg font-bold text-on-surface">User Directory</h3>
+            <h3 className="font-title-md text-lg font-bold text-on-surface">{t("userDirectory")}</h3>
             <div className="relative w-48">
               <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-outline" />
               <input 
                 type="text" 
-                placeholder="Search..." 
+                placeholder={t("search")} 
                 className="w-full pl-9 pr-4 py-1.5 rounded-xl border border-outline-variant/50 bg-white/50 focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -114,11 +116,11 @@ export default function UserManagementPage() {
             <table className="w-full text-left">
               <thead className="bg-[#eff4ff]/60 border-b border-outline-variant/20">
                 <tr>
-                  <th className="px-6 py-3 text-xs font-bold text-outline uppercase tracking-wider">User</th>
-                  <th className="px-6 py-3 text-xs font-bold text-outline uppercase tracking-wider">Role</th>
-                  <th className="px-6 py-3 text-xs font-bold text-outline uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-xs font-bold text-outline uppercase tracking-wider">Last Login</th>
-                  <th className="px-6 py-3 text-xs font-bold text-outline uppercase tracking-wider text-right">Actions</th>
+                  <th className="px-6 py-3 text-xs font-bold text-outline uppercase tracking-wider">{t("thUser")}</th>
+                  <th className="px-6 py-3 text-xs font-bold text-outline uppercase tracking-wider">{t("thRole")}</th>
+                  <th className="px-6 py-3 text-xs font-bold text-outline uppercase tracking-wider">{t("thStatus")}</th>
+                  <th className="px-6 py-3 text-xs font-bold text-outline uppercase tracking-wider">{t("thLastLogin")}</th>
+                  <th className="px-6 py-3 text-xs font-bold text-outline uppercase tracking-wider text-right">{t("thActions")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-outline-variant/10 text-sm">
@@ -139,8 +141,8 @@ export default function UserManagementPage() {
                     </td>
                     <td className="px-6 py-4">
                       <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                        u.role === 'Admin' ? 'bg-primary/10 text-primary' :
-                        u.role === 'Accountant' ? 'bg-tertiary/10 text-tertiary' :
+                        u.role === t('roleAdmin') ? 'bg-primary/10 text-primary' :
+                        u.role === t('roleAccountant') ? 'bg-tertiary/10 text-tertiary' :
                         'bg-secondary/10 text-secondary'
                       }`}>
                         {u.role}
@@ -148,9 +150,9 @@ export default function UserManagementPage() {
                     </td>
                     <td className="px-6 py-4">
                       <span className={`flex items-center gap-1 text-xs font-bold ${
-                        u.status === 'Active' ? 'text-tertiary' : 'text-outline'
+                        u.status === t('statusActive') ? 'text-tertiary' : 'text-outline'
                       }`}>
-                        <div className={`w-2 h-2 rounded-full ${u.status === 'Active' ? 'bg-tertiary' : 'bg-outline'}`}></div>
+                        <div className={`w-2 h-2 rounded-full ${u.status === t('statusActive') ? 'bg-tertiary' : 'bg-outline'}`}></div>
                         {u.status}
                       </span>
                     </td>
@@ -171,16 +173,16 @@ export default function UserManagementPage() {
         <div className="glass-card beveled-edge p-6 rounded-3xl bg-white/70 flex flex-col">
           <div className="flex items-center gap-2 mb-6">
             <Key className="text-primary w-5 h-5" />
-            <h3 className="font-title-md text-lg font-bold text-on-surface">Permission Matrix</h3>
+            <h3 className="font-title-md text-lg font-bold text-on-surface">{t("permissionMatrix")}</h3>
           </div>
           <div className="flex-1 overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-outline-variant/30 text-xs font-bold text-outline tracking-wider">
-                  <th className="pb-3">Feature</th>
-                  <th className="pb-3 text-center">Trader</th>
-                  <th className="pb-3 text-center">Acc.</th>
-                  <th className="pb-3 text-center">Admin</th>
+                  <th className="pb-3">{t("thFeature")}</th>
+                  <th className="pb-3 text-center">{t("thTrader")}</th>
+                  <th className="pb-3 text-center">{t("thAcc")}</th>
+                  <th className="pb-3 text-center">{t("thAdmin")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-outline-variant/10">
@@ -196,9 +198,9 @@ export default function UserManagementPage() {
             </table>
           </div>
           <div className="mt-4 pt-4 border-t border-outline-variant/20 flex gap-4 text-xs text-on-surface-variant justify-center">
-            <span className="flex items-center gap-1"><Check className="w-3 h-3 text-tertiary" /> Full Access</span>
-            <span className="flex items-center gap-1"><Search className="w-3 h-3 text-primary" /> View Only</span>
-            <span className="flex items-center gap-1"><X className="w-3 h-3 text-error" /> Blocked</span>
+            <span className="flex items-center gap-1"><Check className="w-3 h-3 text-tertiary" /> {t("fullAccess")}</span>
+            <span className="flex items-center gap-1"><Search className="w-3 h-3 text-primary" /> {t("viewOnly")}</span>
+            <span className="flex items-center gap-1"><X className="w-3 h-3 text-error" /> {t("blocked")}</span>
           </div>
         </div>
 

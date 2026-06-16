@@ -88,14 +88,14 @@ export default function CashFlowPage() {
 
         <div className="glass-card beveled-edge p-6 rounded-2xl bg-primary text-white border-none shadow-xl shadow-primary/20">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white">
+            <div className="w-12 h-12 rounded-2xl bg-[#4514f3]/20 flex items-center justify-center text-[#4514f3]">
               <Activity className="w-6 h-6" />
             </div>
             <span className="text-on-surface font-bold text-xs bg-white/20 px-2 py-1 rounded-lg">{t("healthy")}</span>
           </div>
-          <p className="text-body-sm text-white/80 font-medium">{t("netCashFlow")}</p>
+          <p className="text-body-sm text-on-surface-variant font-medium">{t("netCashFlow")}</p>
           <div className="flex items-center gap-3">
-            <p className="text-3xl font-bold text-white">
+            <p className="text-3xl font-bold text-on-surface">
               {isNetPositive ? "+" : ""}{netCashFlow.toLocaleString()} DZD
             </p>
             {isNetPositive ? (

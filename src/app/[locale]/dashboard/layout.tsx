@@ -44,30 +44,30 @@ const LogoIcon = () => (
 
 const adminLinks = [
   { key: "adminPanel", href: "/dashboard/admin", icon: Shield },
-  { key: "userManagement", href: "/dashboard/users", icon: Users },
-  { key: "settings", href: "/dashboard/settings", icon: Settings },
+  { key: "userManagement", href: "/dashboard/admin/users", icon: Users },
+  { key: "settings", href: "/dashboard/admin/settings", icon: Settings },
 ];
 
 const accountantLinks = [
   { key: "accountantPortal", href: "/dashboard/accountant", icon: Briefcase },
-  { key: "settings", href: "/dashboard/settings", icon: Settings },
+  { key: "settings", href: "/dashboard/accountant/settings", icon: Settings },
 ];
 
 const userLinks = [
-  { key: "dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { key: "accounts", href: "/dashboard/accounts", icon: Landmark },
-  { key: "creditDebt", href: "/dashboard/credits-debts", icon: CreditCard },
-  { key: "sales", href: "/dashboard/sales", icon: Banknote },
-  { key: "expenses", href: "/dashboard/expenses", icon: Receipt },
-  { key: "cashFlow", href: "/dashboard/cash-flow", icon: ArrowRightLeft },
-  { key: "invoices", href: "/dashboard/invoices", icon: FileText },
-  { key: "inventory", href: "/dashboard/inventory", icon: Package },
-  { key: "payroll", href: "/dashboard/payroll", icon: Coins },
-  { key: "reports", href: "/dashboard/reports", icon: BarChart3 },
-  { key: "declarations", href: "/dashboard/declarations", icon: FileSignature },
-  { key: "revenue", href: "/dashboard/revenue", icon: WalletCards },
-  { key: "assistant", href: "/dashboard/assistant", icon: Bot },
-  { key: "settings", href: "/dashboard/settings", icon: Settings },
+  { key: "dashboard", href: "/dashboard/trader", icon: LayoutDashboard },
+  { key: "accounts", href: "/dashboard/trader/accounts", icon: Landmark },
+  { key: "creditDebt", href: "/dashboard/trader/credits-debts", icon: CreditCard },
+  { key: "sales", href: "/dashboard/trader/sales", icon: Banknote },
+  { key: "expenses", href: "/dashboard/trader/expenses", icon: Receipt },
+  { key: "cashFlow", href: "/dashboard/trader/cash-flow", icon: ArrowRightLeft },
+  { key: "invoices", href: "/dashboard/trader/invoices", icon: FileText },
+  { key: "inventory", href: "/dashboard/trader/inventory", icon: Package },
+  { key: "payroll", href: "/dashboard/trader/payroll", icon: Coins },
+  { key: "reports", href: "/dashboard/trader/reports", icon: BarChart3 },
+  { key: "declarations", href: "/dashboard/trader/declarations", icon: FileSignature },
+  { key: "revenue", href: "/dashboard/trader/revenue", icon: WalletCards },
+  { key: "assistant", href: "/dashboard/trader/assistant", icon: Bot },
+  { key: "settings", href: "/dashboard/trader/settings", icon: Settings },
 ] as const;
 
 export default function DashboardLayout({
@@ -81,9 +81,9 @@ export default function DashboardLayout({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   let currentLinks: ReadonlyArray<{ key: string; href: string; icon: typeof Shield }> = userLinks;
-  if (pathname.startsWith('/dashboard/admin') || pathname.startsWith('/dashboard/users')) {
+  if (pathname.includes('/dashboard/admin')) {
     currentLinks = adminLinks;
-  } else if (pathname.startsWith('/dashboard/accountant')) {
+  } else if (pathname.includes('/dashboard/accountant')) {
     currentLinks = accountantLinks;
   }
 

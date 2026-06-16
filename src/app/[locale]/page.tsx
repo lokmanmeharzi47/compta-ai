@@ -431,16 +431,49 @@ export default function Home() {
               <h2 className="font-display-lg text-4xl mb-4 font-bold text-on-surface">{t("pricingTitle")}</h2>
               <p className="text-on-surface-variant text-lg">{t("pricingSubtitle")}</p>
             </div>
-            <div className="flex justify-center max-w-md mx-auto">
-              {/* Professional */}
-              <div className="glass-card p-10 rounded-[32px] w-full flex flex-col items-center text-center border border-primary/20 bg-white shadow-2xl relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-center">
+              {/* 1 Month */}
+              <div className="glass-card p-10 rounded-[32px] w-full flex flex-col items-center text-center border border-primary/20 bg-white shadow-2xl relative z-10 md:scale-105">
                 <div className="absolute -top-4 px-4 py-1 rounded-full bg-gradient-to-r from-primary to-secondary text-white text-[10px] font-black tracking-widest uppercase">
                   {t("mostPopular")}
                 </div>
-                <span className="font-label-caps text-xs text-primary mb-4 font-bold tracking-widest uppercase">{t("professional")}</span>
+                <span className="font-label-caps text-xs text-primary mb-4 font-bold tracking-widest uppercase">{t("plan1Month")}</span>
                 <div className="flex items-baseline gap-1 mb-8">
                   <span className="text-5xl font-display-lg font-bold text-primary">2500 DZD</span>
-                  <span className="text-on-surface-variant">{t("perMonth")}</span>
+                  <span className="text-on-surface-variant text-sm">{t("perMonth")}</span>
+                </div>
+                <ul className="w-full space-y-4 mb-10 text-on-surface text-sm font-medium">
+                  <li className="flex items-center gap-2 justify-center">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" stroke="url(#success-grad)" strokeWidth={1.5} />
+                    {t("planFeature1")}
+                  </li>
+                  <li className="flex items-center gap-2 justify-center">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" stroke="url(#success-grad)" strokeWidth={1.5} />
+                    {t("planFeature2")}
+                  </li>
+                  <li className="flex items-center gap-2 justify-center">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" stroke="url(#success-grad)" strokeWidth={1.5} />
+                    {t("planFeature3")}
+                  </li>
+                </ul>
+                <Link href="/register" className="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-xl shadow-primary/30 hover:scale-105 transition-transform">
+                  {t("getStartedPro")}
+                </Link>
+                <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 rounded-full font-bold text-xs uppercase tracking-wider">
+                  {t("freeTrial14")}
+                </div>
+              </div>
+
+              {/* 6 Months */}
+              <div className="glass-card p-8 rounded-[32px] w-full flex flex-col items-center text-center border border-outline-variant/30 bg-white/70 shadow-lg relative">
+                <span className="font-label-caps text-xs text-primary mb-4 font-bold tracking-widest uppercase">{t("plan6Months")}</span>
+                <div className="flex flex-col items-center gap-1 mb-6">
+                  <span className="text-sm text-on-surface-variant line-through font-medium">15000 DZD</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-display-lg font-bold text-primary">12000 DZD</span>
+                    <span className="text-on-surface-variant text-sm">{t("per6Months")}</span>
+                  </div>
+                  <span className="text-xs font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full mt-2">{t("save")} 3000 DZD</span>
                 </div>
                 <ul className="w-full space-y-4 mb-10 text-on-surface text-sm font-medium">
                   <li className="flex items-center gap-2 justify-center">
@@ -460,12 +493,43 @@ export default function Home() {
                     {t("planFeature4")}
                   </li>
                 </ul>
-                <Link href="/register" className="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-xl shadow-primary/30 hover:scale-105 transition-transform">
+                <Link href="/register" className="w-full py-3 rounded-xl bg-white border border-primary text-primary font-bold shadow-sm hover:bg-primary/5 transition-colors">
                   {t("getStartedPro")}
                 </Link>
-                <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 rounded-full font-bold text-xs uppercase tracking-wider">
-                  {t("freeTrial14")}
+              </div>
+
+              {/* 12 Months */}
+              <div className="glass-card p-8 rounded-[32px] w-full flex flex-col items-center text-center border border-outline-variant/30 bg-white/70 shadow-lg relative">
+                <span className="font-label-caps text-xs text-primary mb-4 font-bold tracking-widest uppercase">{t("plan12Months")}</span>
+                <div className="flex flex-col items-center gap-1 mb-6">
+                  <span className="text-sm text-on-surface-variant line-through font-medium">30000 DZD</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-display-lg font-bold text-primary">21000 DZD</span>
+                    <span className="text-on-surface-variant text-sm">{t("perYear")}</span>
+                  </div>
+                  <span className="text-xs font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full mt-2">{t("save")} 9000 DZD</span>
                 </div>
+                <ul className="w-full space-y-4 mb-10 text-on-surface text-sm font-medium">
+                  <li className="flex items-center gap-2 justify-center">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" stroke="url(#success-grad)" strokeWidth={1.5} />
+                    {t("planFeature1")}
+                  </li>
+                  <li className="flex items-center gap-2 justify-center">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" stroke="url(#success-grad)" strokeWidth={1.5} />
+                    {t("planFeature2")}
+                  </li>
+                  <li className="flex items-center gap-2 justify-center">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" stroke="url(#success-grad)" strokeWidth={1.5} />
+                    {t("planFeature3")}
+                  </li>
+                  <li className="flex items-center gap-2 justify-center">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" stroke="url(#success-grad)" strokeWidth={1.5} />
+                    {t("planFeature4")}
+                  </li>
+                </ul>
+                <Link href="/register" className="w-full py-3 rounded-xl bg-white border border-primary text-primary font-bold shadow-sm hover:bg-primary/5 transition-colors">
+                  {t("getStartedPro")}
+                </Link>
               </div>
             </div>
           </div>

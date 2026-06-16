@@ -234,7 +234,7 @@ export default function AssistantPage() {
                   <PiggyBank className="w-5 h-5" />
                 </div>
                 <div className="flex-grow">
-                  <h4 className="font-bold text-sm text-on-surface">Savings Opportunity</h4>
+                  <h4 className="font-bold text-sm text-on-surface">Optimisation Fiscale⁠</h4>
                   <p className="text-xs text-on-surface-variant mt-1">
                     {t("savingsDesc")}
                   </p>
