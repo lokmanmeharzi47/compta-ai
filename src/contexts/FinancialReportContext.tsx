@@ -24,9 +24,13 @@ export interface FinancialData {
   opexTrend: string;
 }
 
+export type ViewMode = "tcr" | "bilan";
+
 interface FinancialReportContextType {
   timeFilter: TimeFilter;
   setTimeFilter: (filter: TimeFilter) => void;
+  viewMode: ViewMode;
+  setViewMode: (mode: ViewMode) => void;
   data: FinancialData;
   setData: React.Dispatch<React.SetStateAction<FinancialData>>;
   rawFinData: RawFinancialData;
@@ -48,6 +52,7 @@ const FinancialReportContext = createContext<FinancialReportContextType | undefi
 
 export const FinancialReportProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [timeFilter, setTimeFilter] = useState<TimeFilter>("1M");
+  const [viewMode, setViewMode] = useState<ViewMode>("tcr");
 
   const [data, setData] = useState<FinancialData>({
     revenueGross: 452300.0,
@@ -114,11 +119,20 @@ export const FinancialReportProvider: React.FC<{ children: React.ReactNode }> = 
     // Mock parsing delay
     await new Promise(resolve => setTimeout(resolve, 800));
     
+    setViewMode(type);
+
     if (type === "bilan") {
+      // Set to exact values from the user's image Bilan
       setRawFinData(prev => ({
         ...prev,
-        stocks: prev.stocks * 1.15,
-        creancesClients: prev.creancesClients * 0.9,
+        capitauxPropres: 50000000,
+        empruntsLT: 25000000, // Passif Non Courant
+        dettesFournisseurs: 35000000, // Passif Courant
+        tresoreriePassif: 10000000,
+        immobilisations: 60000000, // Actif Non Courant
+        stocks: 35000000, // Actif Courant (Stocks)
+        creancesClients: 15000000, // Actif Courant (Créances)
+        tresorerieActif: 10000000,
       }));
     } else {
       setData(prev => ({
@@ -139,6 +153,8 @@ export const FinancialReportProvider: React.FC<{ children: React.ReactNode }> = 
   const value = {
     timeFilter,
     setTimeFilter,
+    viewMode,
+    setViewMode,
     data,
     setData,
     rawFinData,

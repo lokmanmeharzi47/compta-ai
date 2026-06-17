@@ -12,12 +12,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 function ReportsDashboard() {
   const t = useTranslations("reportsPage");
   const { 
     timeFilter, setTimeFilter,
-    data, setData, 
+    viewMode, setViewMode,
+    data, setData, rawFinData,
     chartData, 
     revenueNet, cogsNet, grossProfit, opexNet, netIncome, netIncomeTrendPercentage,
     aiAnalysis,
@@ -115,13 +117,7 @@ function ReportsDashboard() {
     showToast("Export PDF en cours...");
   };
 
-  const maxVal = Math.max(...chartData.map(d => d.current), 200000);
-  const dynamicPath = chartData.map((d, i) => {
-    const x = i * (800 / (chartData.length - 1 || 1));
-    const y = 200 - (d.current / maxVal) * 160;
-    if (i === 0) return `M0 ${y}`;
-    return `T ${x} ${y}`;
-  }).join(" ");
+  // Recharts handles scaling natively, so custom SVG path generation is removed.
 
   return (
     <div className="space-y-8 relative">
@@ -245,39 +241,54 @@ function ReportsDashboard() {
           </div>
 
           {/* Line Chart */}
-          <div className="h-64 w-full relative">
-            <svg className="w-full h-full overflow-visible" viewBox="0 0 800 200">
-              <line stroke="#727687" strokeOpacity="0.1" strokeWidth="1" x1="0" x2="800" y1="0" y2="0"></line>
-              <line stroke="#727687" strokeOpacity="0.1" strokeWidth="1" x1="0" x2="800" y1="50" y2="50"></line>
-              <line stroke="#727687" strokeOpacity="0.1" strokeWidth="1" x1="0" x2="800" y1="100" y2="100"></line>
-              <line stroke="#727687" strokeOpacity="0.1" strokeWidth="1" x1="0" x2="800" y1="150" y2="150"></line>
-              <line stroke="#727687" strokeOpacity="0.1" strokeWidth="1" x1="0" x2="800" y1="200" y2="200"></line>
-              
-              <path
-                d={`${dynamicPath} L 800 200 L 0 200 Z`}
-                fill="url(#chartGradient)"
-              ></path>
-              <defs>
-                <linearGradient id="chartGradient" x1="0%" x2="0%" y1="0%" y2="100%">
-                  <stop offset="0%" stopColor="rgba(0, 80, 203, 0.15)"></stop>
-                  <stop offset="100%" stopColor="rgba(0, 80, 203, 0)"></stop>
-                </linearGradient>
-              </defs>
-              <path
-                d={dynamicPath}
-                fill="none"
-                stroke="#0050cb"
-                strokeLinecap="round"
-                strokeWidth="4"
-              ></path>
-              <circle cx="800" cy={200 - (chartData[chartData.length-1].current / maxVal) * 160} fill="#0050cb" r="6"></circle>
-              <circle cx="800" cy={200 - (chartData[chartData.length-1].current / maxVal) * 160} fill="#0050cb" fillOpacity="0.2" r="12"></circle>
-            </svg>
-            <div className="flex justify-between mt-4 text-xs font-bold text-on-surface-variant">
-              {chartData.map((d, i) => (
-                <span key={i}>{d.date}</span>
-              ))}
-            </div>
+          {/* Interactive Line Chart with Recharts */}
+          <div className="flex-1 w-full mt-4 min-h-[200px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorCurrent" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#0050cb" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#0050cb" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#727687" strokeOpacity={0.15} />
+                <XAxis 
+                  dataKey="date" 
+                  axisLine={false} 
+                  tickLine={false} 
+                  tick={{ fontSize: 12, fill: '#727687', fontWeight: 600 }}
+                  dy={10}
+                />
+                <YAxis 
+                  axisLine={false} 
+                  tickLine={false} 
+                  tick={{ fontSize: 12, fill: '#727687', fontWeight: 600 }}
+                  dx={-10}
+                  tickFormatter={(val) => `${(val / 1000).toFixed(0)}k`}
+                  domain={['dataMin - 10000', 'dataMax + 10000']}
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    borderRadius: '12px', 
+                    border: 'none',
+                    boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    fontWeight: 'bold'
+                  }}
+                  itemStyle={{ color: '#0050cb' }}
+                  formatter={(value: any) => [`${Number(value || 0).toLocaleString()} DZD`, "Résultat Net"]}
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="current" 
+                  stroke="#0050cb" 
+                  strokeWidth={3}
+                  fillOpacity={1} 
+                  fill="url(#colorCurrent)" 
+                  activeDot={{ r: 6, strokeWidth: 0, fill: '#0050cb', className: 'drop-shadow-md' }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
@@ -365,64 +376,133 @@ function ReportsDashboard() {
         {/* Financial Table (12 cols) */}
         <div className="col-span-12 glass-card beveled-edge rounded-3xl overflow-hidden bg-white/40">
           <div className="px-8 py-6 border-b border-outline-variant/30 flex justify-between items-center bg-white/40">
-            <h3 className="font-title-md text-lg font-bold text-on-surface">{t("statementDetails")}</h3>
+            <div className="flex items-center gap-6">
+              <h3 className="font-title-md text-lg font-bold text-on-surface">{t("statementDetails")}</h3>
+              <div className="flex bg-outline-variant/20 rounded-lg p-1">
+                <button 
+                  onClick={() => setViewMode("tcr")}
+                  className={`px-4 py-1.5 text-sm font-bold rounded-md transition-all ${viewMode === "tcr" ? "bg-white text-primary shadow-sm" : "text-on-surface-variant hover:text-on-surface"}`}
+                >
+                  TCR
+                </button>
+                <button 
+                  onClick={() => setViewMode("bilan")}
+                  className={`px-4 py-1.5 text-sm font-bold rounded-md transition-all ${viewMode === "bilan" ? "bg-white text-primary shadow-sm" : "text-on-surface-variant hover:text-on-surface"}`}
+                >
+                  Bilan
+                </button>
+              </div>
+            </div>
             <div className="flex gap-4">
               <Filter className="w-5 h-5 text-outline cursor-pointer hover:text-primary" />
               <MoreVertical className="w-5 h-5 text-outline cursor-pointer hover:text-primary" />
             </div>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-start">
-              <thead className="bg-[#eff4ff]/60 border-b border-outline-variant/20">
-                <tr>
-                  <th className="px-8 py-4 text-xs font-bold text-on-surface-variant">{t("category")}</th>
-                  <th className="px-8 py-4 text-xs font-bold text-on-surface-variant text-end">{t("grossAmount")}</th>
-                  <th className="px-8 py-4 text-xs font-bold text-on-surface-variant text-end">{t("adjustments")}</th>
-                  <th className="px-8 py-4 text-xs font-bold text-on-surface-variant text-end">{t("netAmount")}</th>
-                  <th className="px-8 py-4 text-xs font-bold text-on-surface-variant text-end">{t("trend")}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-outline-variant/10 text-sm">
-                <tr className="hover:bg-white/20 transition-colors">
-                  <td className="px-8 py-5 font-bold text-on-surface">{t("revenue")}</td>
-                  <td className="px-8 py-5 font-mono-data text-end">{data.revenueGross.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
-                  <td className="px-8 py-5 font-mono-data text-end">({Math.abs(data.revenueAdjust).toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD)</td>
-                  <td className="px-8 py-5 font-mono-data font-bold text-end text-primary">{revenueNet.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
-                  <td className="px-8 py-5 text-end"><span className="text-tertiary font-bold">{data.revenueTrend}</span></td>
-                </tr>
-                <tr className="hover:bg-white/20 transition-colors">
-                  <td className="px-8 py-5 text-on-surface">{t("cogs")}</td>
-                  <td className="px-8 py-5 font-mono-data text-end">{data.cogsGross.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
-                  <td className="px-8 py-5 font-mono-data text-end">{data.cogsAdjust.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
-                  <td className="px-8 py-5 font-mono-data text-end text-error">({cogsNet.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD)</td>
-                  <td className="px-8 py-5 text-end"><span className="text-error font-bold">{data.cogsTrend}</span></td>
-                </tr>
-                <tr className="bg-[#eff4ff]/40">
-                  <td className="px-8 py-5 font-bold text-on-surface">{t("grossProfit")}</td>
-                  <td className="px-8 py-5 font-mono-data text-end">--</td>
-                  <td className="px-8 py-5 font-mono-data text-end">--</td>
-                  <td className="px-8 py-5 font-mono-data font-black text-end">{grossProfit.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
-                  <td className="px-8 py-5 text-end"><span className="text-tertiary font-bold">↑ 11%</span></td>
-                </tr>
-                <tr className="hover:bg-white/20 transition-colors">
-                  <td className="px-8 py-5 text-on-surface">{t("opex")}</td>
-                  <td className="px-8 py-5 font-mono-data text-end">{data.opexGross.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
-                  <td className="px-8 py-5 font-mono-data text-end">({Math.abs(data.opexAdjust).toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD)</td>
-                  <td className="px-8 py-5 font-mono-data text-end text-error">({opexNet.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD)</td>
-                  <td className="px-8 py-5 text-end"><span className="text-tertiary font-bold">{data.opexTrend}</span></td>
-                </tr>
-                <tr className="bg-primary/10 border-t-2 border-primary/30">
-                  <td className="px-8 py-6 font-black text-primary">{t("netIncome")}</td>
-                  <td className="px-8 py-6 font-mono-data text-end">--</td>
-                  <td className="px-8 py-6 font-mono-data text-end">--</td>
-                  <td className="px-8 py-6 font-mono-data font-black text-2xl text-end text-primary">{netIncome.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
-                  <td className="px-8 py-6 text-end">
-                    <span className="px-3 py-1 bg-tertiary/10 text-tertiary rounded-full font-bold">↑ {netIncomeTrendPercentage}</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          {viewMode === "tcr" ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-start">
+                <thead className="bg-[#eff4ff]/60 border-b border-outline-variant/20">
+                  <tr>
+                    <th className="px-8 py-4 text-xs font-bold text-on-surface-variant">{t("category")}</th>
+                    <th className="px-8 py-4 text-xs font-bold text-on-surface-variant text-end">{t("grossAmount")}</th>
+                    <th className="px-8 py-4 text-xs font-bold text-on-surface-variant text-end">{t("adjustments")}</th>
+                    <th className="px-8 py-4 text-xs font-bold text-on-surface-variant text-end">{t("netAmount")}</th>
+                    <th className="px-8 py-4 text-xs font-bold text-on-surface-variant text-end">{t("trend")}</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-outline-variant/10 text-sm">
+                  <tr className="hover:bg-white/20 transition-colors">
+                    <td className="px-8 py-5 font-bold text-on-surface">{t("revenue")}</td>
+                    <td className="px-8 py-5 font-mono-data text-end">{data.revenueGross.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
+                    <td className="px-8 py-5 font-mono-data text-end">({Math.abs(data.revenueAdjust).toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD)</td>
+                    <td className="px-8 py-5 font-mono-data font-bold text-end text-primary">{revenueNet.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
+                    <td className="px-8 py-5 text-end"><span className="text-tertiary font-bold">{data.revenueTrend}</span></td>
+                  </tr>
+                  <tr className="hover:bg-white/20 transition-colors">
+                    <td className="px-8 py-5 text-on-surface">{t("cogs")}</td>
+                    <td className="px-8 py-5 font-mono-data text-end">{data.cogsGross.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
+                    <td className="px-8 py-5 font-mono-data text-end">{data.cogsAdjust.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
+                    <td className="px-8 py-5 font-mono-data text-end text-error">({cogsNet.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD)</td>
+                    <td className="px-8 py-5 text-end"><span className="text-error font-bold">{data.cogsTrend}</span></td>
+                  </tr>
+                  <tr className="bg-[#eff4ff]/40">
+                    <td className="px-8 py-5 font-bold text-on-surface">{t("grossProfit")}</td>
+                    <td className="px-8 py-5 font-mono-data text-end">--</td>
+                    <td className="px-8 py-5 font-mono-data text-end">--</td>
+                    <td className="px-8 py-5 font-mono-data font-black text-end">{grossProfit.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
+                    <td className="px-8 py-5 text-end"><span className="text-tertiary font-bold">↑ 11%</span></td>
+                  </tr>
+                  <tr className="hover:bg-white/20 transition-colors">
+                    <td className="px-8 py-5 text-on-surface">{t("opex")}</td>
+                    <td className="px-8 py-5 font-mono-data text-end">{data.opexGross.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
+                    <td className="px-8 py-5 font-mono-data text-end">({Math.abs(data.opexAdjust).toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD)</td>
+                    <td className="px-8 py-5 font-mono-data text-end text-error">({opexNet.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD)</td>
+                    <td className="px-8 py-5 text-end"><span className="text-tertiary font-bold">{data.opexTrend}</span></td>
+                  </tr>
+                  <tr className="bg-primary/10 border-t-2 border-primary/30">
+                    <td className="px-8 py-6 font-black text-primary">{t("netIncome")}</td>
+                    <td className="px-8 py-6 font-mono-data text-end">--</td>
+                    <td className="px-8 py-6 font-mono-data text-end">--</td>
+                    <td className="px-8 py-6 font-mono-data font-black text-2xl text-end text-primary">{netIncome.toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td>
+                    <td className="px-8 py-6 text-end">
+                      <span className="px-3 py-1 bg-tertiary/10 text-tertiary rounded-full font-bold">↑ {netIncomeTrendPercentage}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="overflow-x-auto p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                {/* Actif Column */}
+                <div>
+                  <h4 className="font-title-md font-bold text-xl mb-6 text-on-surface uppercase tracking-wide border-b-2 border-primary/30 pb-2">ACTIF <span className="text-sm font-normal text-on-surface-variant lowercase">(ce que l'entreprise possède)</span></h4>
+                  <table className="w-full text-start text-sm">
+                    <tbody className="divide-y divide-outline-variant/10">
+                      <tr className="bg-[#eff4ff]/60 border-b-2 border-primary/20"><td className="py-3 px-4 font-bold text-on-surface">ACTIF NON COURANT</td><td className="py-3 px-4 text-end font-bold font-mono-data text-primary">{rawFinData.immobilisations.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>
+                      <tr className="hover:bg-black/5"><td className="py-3 px-4 pl-8 text-on-surface-variant flex items-center gap-2"><span className="w-1 h-1 bg-outline rounded-full"></span>Immobilisations incorporelles (Logiciels)</td><td className="py-3 px-4 text-end font-mono-data">5,000,000.00</td></tr>
+                      <tr className="hover:bg-black/5"><td className="py-3 px-4 pl-8 text-on-surface-variant flex items-center gap-2"><span className="w-1 h-1 bg-outline rounded-full"></span>Immobilisations corporelles (Bâtiment, Camions)</td><td className="py-3 px-4 text-end font-mono-data">55,000,000.00</td></tr>
+                      <tr className="hover:bg-black/5"><td className="py-3 px-4 pl-8 text-on-surface-variant flex items-center gap-2"><span className="w-1 h-1 bg-outline rounded-full"></span>Immobilisations financières</td><td className="py-3 px-4 text-end font-mono-data">0.00</td></tr>
+                      
+                      <tr className="bg-[#eff4ff]/60 border-b-2 border-primary/20 mt-4"><td className="py-3 px-4 font-bold text-on-surface">ACTIF COURANT</td><td className="py-3 px-4 text-end font-bold font-mono-data text-primary">{(rawFinData.stocks + rawFinData.creancesClients).toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>
+                      <tr className="hover:bg-black/5"><td className="py-3 px-4 pl-8 text-on-surface-variant flex items-center gap-2"><span className="w-1 h-1 bg-outline rounded-full"></span>Stocks (Marchandises en entrepôt)</td><td className="py-3 px-4 text-end font-mono-data">{rawFinData.stocks.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>
+                      <tr className="hover:bg-black/5"><td className="py-3 px-4 pl-8 text-on-surface-variant flex items-center gap-2"><span className="w-1 h-1 bg-outline rounded-full"></span>Créances clients et comptes rattachés</td><td className="py-3 px-4 text-end font-mono-data">{rawFinData.creancesClients.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>
+                      <tr className="hover:bg-black/5"><td className="py-3 px-4 pl-8 text-on-surface-variant flex items-center gap-2"><span className="w-1 h-1 bg-outline rounded-full"></span>Autres créances</td><td className="py-3 px-4 text-end font-mono-data">0.00</td></tr>
+                      
+                      <tr className="bg-[#eff4ff]/60 border-b-2 border-primary/20 mt-4"><td className="py-3 px-4 font-bold text-on-surface">TRÉSORERIE ACTIF</td><td className="py-3 px-4 text-end font-bold font-mono-data text-primary">{rawFinData.tresorerieActif.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>
+                      <tr className="hover:bg-black/5"><td className="py-3 px-4 pl-8 text-on-surface-variant flex items-center gap-2"><span className="w-1 h-1 bg-outline rounded-full"></span>Banques, établissements financiers (Banque/CCP)</td><td className="py-3 px-4 text-end font-mono-data">{rawFinData.tresorerieActif.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>
+                      
+                      <tr className="bg-primary/10 border-t-4 border-primary/30 mt-6"><td className="py-4 px-4 font-black text-primary text-lg">TOTAL ACTIF</td><td className="py-4 px-4 text-end font-black text-primary text-lg font-mono-data">{(rawFinData.immobilisations + rawFinData.stocks + rawFinData.creancesClients + rawFinData.tresorerieActif).toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Passif Column */}
+                <div>
+                  <h4 className="font-title-md font-bold text-xl mb-6 text-on-surface uppercase tracking-wide border-b-2 border-primary/30 pb-2">PASSIF <span className="text-sm font-normal text-on-surface-variant lowercase">(comment c'est financé)</span></h4>
+                  <table className="w-full text-start text-sm">
+                    <tbody className="divide-y divide-outline-variant/10">
+                      <tr className="bg-[#eff4ff]/60 border-b-2 border-primary/20"><td className="py-3 px-4 font-bold text-on-surface">CAPITAUX PROPRES</td><td className="py-3 px-4 text-end font-bold font-mono-data text-primary">{rawFinData.capitauxPropres.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>
+                      <tr className="hover:bg-black/5"><td className="py-3 px-4 pl-8 text-on-surface-variant flex items-center gap-2"><span className="w-1 h-1 bg-outline rounded-full"></span>Capital émis (Capital social)</td><td className="py-3 px-4 text-end font-mono-data">35,000,000.00</td></tr>
+                      <tr className="hover:bg-black/5"><td className="py-3 px-4 pl-8 text-on-surface-variant flex items-center gap-2"><span className="w-1 h-1 bg-outline rounded-full"></span>Réserves (Légales et statutaires)</td><td className="py-3 px-4 text-end font-mono-data">10,000,000.00</td></tr>
+                      <tr className="hover:bg-black/5"><td className="py-3 px-4 pl-8 text-on-surface-variant flex items-center gap-2"><span className="w-1 h-1 bg-outline rounded-full"></span>Résultat net de l'exercice (Bénéfice)</td><td className="py-3 px-4 text-end font-mono-data">5,000,000.00</td></tr>
+
+                      <tr className="bg-[#eff4ff]/60 border-b-2 border-primary/20 mt-4"><td className="py-3 px-4 font-bold text-on-surface">PASSIF NON COURANT</td><td className="py-3 px-4 text-end font-bold font-mono-data text-primary">{rawFinData.empruntsLT.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>
+                      <tr className="hover:bg-black/5"><td className="py-3 px-4 pl-8 text-on-surface-variant flex items-center gap-2"><span className="w-1 h-1 bg-outline rounded-full"></span>Emprunts auprès des établissements de crédit</td><td className="py-3 px-4 text-end font-mono-data">{rawFinData.empruntsLT.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>
+                      
+                      <tr className="bg-[#eff4ff]/60 border-b-2 border-primary/20 mt-4"><td className="py-3 px-4 font-bold text-on-surface">PASSIF COURANT</td><td className="py-3 px-4 text-end font-bold font-mono-data text-primary">{rawFinData.dettesFournisseurs.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>
+                      <tr className="hover:bg-black/5"><td className="py-3 px-4 pl-8 text-on-surface-variant flex items-center gap-2"><span className="w-1 h-1 bg-outline rounded-full"></span>Dettes Fournisseurs et comptes rattachés</td><td className="py-3 px-4 text-end font-mono-data">{rawFinData.dettesFournisseurs.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>
+
+                      <tr className="bg-[#eff4ff]/60 border-b-2 border-primary/20 mt-4"><td className="py-3 px-4 font-bold text-on-surface">TRÉSORERIE PASSIF</td><td className="py-3 px-4 text-end font-bold font-mono-data text-primary">{rawFinData.tresoreriePassif.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>
+                      <tr className="hover:bg-black/5"><td className="py-3 px-4 pl-8 text-on-surface-variant flex items-center gap-2"><span className="w-1 h-1 bg-outline rounded-full"></span>Concours bancaires courants (Découverts)</td><td className="py-3 px-4 text-end font-mono-data">{rawFinData.tresoreriePassif.toLocaleString("en-US", { minimumFractionDigits: 2 })}</td></tr>
+
+                      <tr className="bg-primary/10 border-t-4 border-primary/30 mt-6"><td className="py-4 px-4 font-black text-primary text-lg">TOTAL PASSIF</td><td className="py-4 px-4 text-end font-black text-primary text-lg font-mono-data">{(rawFinData.capitauxPropres + rawFinData.empruntsLT + rawFinData.dettesFournisseurs + rawFinData.tresoreriePassif).toLocaleString("en-US", { minimumFractionDigits: 2 })} DZD</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
