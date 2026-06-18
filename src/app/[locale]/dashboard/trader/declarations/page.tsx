@@ -22,21 +22,21 @@ export default function DeclarationsPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const declarations = [
-    { id: "DEC-2024-10", period: "October 2024", trader: "Ahmed Benali", accountant: "Sarah Expert", status: "Approved", date: "Nov 02, 2024", amount: "1,245,000 DZD", fee: 2000, paymentStatus: "Paid" },
-    { id: "DEC-2024-11", period: "November 2024", trader: "Globex Corp", accountant: "Sarah Expert", status: "Under Review", date: "Dec 05, 2024", amount: "3,450,000 DZD", fee: 2000, paymentStatus: "Pending Payment" },
-    { id: "DEC-2024-12", period: "December 2024", trader: "Acme Industries", accountant: "Unassigned", status: "Draft", date: "Jan 02, 2025", amount: "890,000 DZD", fee: 2000, paymentStatus: "Pending Payment" },
-    { id: "DEC-2024-12B", period: "December 2024", trader: "Karim Logistics", accountant: "Sarah Expert", status: "Sent", date: "Jan 05, 2025", amount: "2,100,000 DZD", fee: 2000, paymentStatus: "Pending Payment" },
-    { id: "DEC-2024-09", period: "September 2024", trader: "Tech Supply DZ", accountant: "Sarah Expert", status: "Rejected", date: "Oct 10, 2024", amount: "550,000 DZD", fee: 2000, paymentStatus: "Refunded" },
-    { id: "DEC-2024-08", period: "August 2024", trader: "Tech Supply DZ", accountant: "Sarah Expert", status: "Approved", date: "Sep 12, 2024", amount: "720,000 DZD", fee: 2000, paymentStatus: "Processing" },
+    { id: "G50", period: "October 2024", trader: "Ahmed Benali", accountant: "COMPTABLE", status: "Approved", date: "Nov 02, 2024", amount: "1,245,000 DZD", fee: 2000, paymentStatus: "Paid" },
+    { id: "TVA", period: "November 2024", trader: "Globex Corp", accountant: "COMPTABLE", status: "Under Review", date: "Dec 05, 2024", amount: "3,450,000 DZD", fee: 2000, paymentStatus: "Pending Payment" },
+    { id: "IRG/Salaires", period: "December 2024", trader: "Acme Industries", accountant: "Unassigned", status: "Draft", date: "Jan 02, 2025", amount: "890,000 DZD", fee: 2000, paymentStatus: "Pending Payment" },
+    { id: "G4", period: "December 2024", trader: "Karim Logistics", accountant: "COMPTABLE", status: "Sent", date: "Jan 05, 2025", amount: "2,100,000 DZD", fee: 2000, paymentStatus: "Pending Payment" },
+    { id: "IBS", period: "September 2024", trader: "Tech Supply DZ", accountant: "COMPTABLE", status: "Rejected", date: "Oct 10, 2024", amount: "550,000 DZD", fee: 2000, paymentStatus: "Refunded" },
+    { id: "G29", period: "August 2024", trader: "Tech Supply DZ", accountant: "COMPTABLE", status: "Approved", date: "Sep 12, 2024", amount: "720,000 DZD", fee: 2000, paymentStatus: "Processing" },
   ];
 
-  const filteredDeclarations = declarations.filter(d => 
-    d.trader.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  const filteredDeclarations = declarations.filter(d =>
+    d.trader.toLowerCase().includes(searchQuery.toLowerCase()) ||
     d.period.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const getStatusConfig = (status: string) => {
-    switch(status) {
+    switch (status) {
       case 'Draft': return { color: 'text-outline', bg: 'bg-outline-variant/20', icon: <FileEdit className="w-3 h-3" /> };
       case 'Sent': return { color: 'text-secondary', bg: 'bg-secondary/10', icon: <Send className="w-3 h-3" /> };
       case 'Under Review': return { color: 'text-primary', bg: 'bg-primary/10', icon: <Eye className="w-3 h-3" /> };
@@ -47,7 +47,7 @@ export default function DeclarationsPage() {
   };
 
   const getPaymentStatusConfig = (status: string) => {
-    switch(status) {
+    switch (status) {
       case 'Paid': return { color: 'text-tertiary', bg: 'bg-tertiary/10' };
       case 'Pending Payment': return { color: 'text-outline', bg: 'bg-outline-variant/20' };
       case 'Processing': return { color: 'text-secondary', bg: 'bg-secondary/10' };
@@ -121,8 +121,8 @@ export default function DeclarationsPage() {
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <div className="relative w-full sm:w-64">
               <Search className="w-4 h-4 absolute start-3 top-1/2 transform -translate-y-1/2 text-outline" />
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder={t("search")}
                 className="w-full ps-9 pe-4 py-2 rounded-xl border border-outline-variant/50 bg-white/50 focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
                 value={searchQuery}
@@ -150,7 +150,7 @@ export default function DeclarationsPage() {
                 const payConf = getPaymentStatusConfig(dec.paymentStatus);
                 const accShare = dec.fee * 0.9;
                 const platShare = dec.fee * 0.1;
-                
+
                 return (
                   <tr key={dec.id} className="hover:bg-primary/5 transition-colors group">
                     <td className="px-8 py-5">
