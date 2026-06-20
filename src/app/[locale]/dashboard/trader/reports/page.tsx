@@ -243,7 +243,7 @@ function ReportsDashboard() {
           {/* Line Chart */}
           {/* Interactive Line Chart with Recharts */}
           <div className="flex-1 w-full mt-4 min-h-[200px]">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minHeight={200} minWidth={100}>
               <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorCurrent" x1="0" y1="0" x2="0" y2="1">

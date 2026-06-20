@@ -13,7 +13,6 @@ import {
   Plus,
   MessageSquare,
   Wallet,
-  Clock,
   ArrowRight
 } from "lucide-react";
 
@@ -23,11 +22,11 @@ export default function DeclarationsPage() {
 
   const declarations = [
     { id: "G50", period: "October 2024", trader: "Ahmed Benali", accountant: "COMPTABLE", status: "Approved", date: "Nov 02, 2024", amount: "1,245,000 DZD", fee: 2000, paymentStatus: "Paid" },
-    { id: "TVA", period: "November 2024", trader: "Globex Corp", accountant: "COMPTABLE", status: "Under Review", date: "Dec 05, 2024", amount: "3,450,000 DZD", fee: 2000, paymentStatus: "Pending Payment" },
-    { id: "IRG/Salaires", period: "December 2024", trader: "Acme Industries", accountant: "Unassigned", status: "Draft", date: "Jan 02, 2025", amount: "890,000 DZD", fee: 2000, paymentStatus: "Pending Payment" },
-    { id: "G4", period: "December 2024", trader: "Karim Logistics", accountant: "COMPTABLE", status: "Sent", date: "Jan 05, 2025", amount: "2,100,000 DZD", fee: 2000, paymentStatus: "Pending Payment" },
-    { id: "IBS", period: "September 2024", trader: "Tech Supply DZ", accountant: "COMPTABLE", status: "Rejected", date: "Oct 10, 2024", amount: "550,000 DZD", fee: 2000, paymentStatus: "Refunded" },
-    { id: "G29", period: "August 2024", trader: "Tech Supply DZ", accountant: "COMPTABLE", status: "Approved", date: "Sep 12, 2024", amount: "720,000 DZD", fee: 2000, paymentStatus: "Processing" },
+    { id: "TVA", period: "November 2024", trader: "Ahmed Benali", accountant: "COMPTABLE", status: "Under Review", date: "Dec 05, 2024", amount: "3,450,000 DZD", fee: 2000, paymentStatus: "Pending Payment" },
+    { id: "IRG/Salaires", period: "December 2024", trader: "Ahmed Benali", accountant: "Unassigned", status: "Draft", date: "Jan 02, 2025", amount: "890,000 DZD", fee: 2000, paymentStatus: "Pending Payment" },
+    { id: "G4", period: "December 2024", trader: "Ahmed Benali", accountant: "COMPTABLE", status: "Sent", date: "Jan 05, 2025", amount: "2,100,000 DZD", fee: 2000, paymentStatus: "Pending Payment" },
+    { id: "IBS", period: "September 2024", trader: "Ahmed Benali", accountant: "COMPTABLE", status: "Rejected", date: "Oct 10, 2024", amount: "550,000 DZD", fee: 2000, paymentStatus: "Refunded" },
+    { id: "G29", period: "August 2024", trader: "Ahmed Benali", accountant: "COMPTABLE", status: "Approved", date: "Sep 12, 2024", amount: "720,000 DZD", fee: 2000, paymentStatus: "Processing" },
   ];
 
   const filteredDeclarations = declarations.filter(d =>
@@ -180,7 +179,7 @@ export default function DeclarationsPage() {
                           <p className="font-mono-data font-bold text-on-surface">{dec.fee.toLocaleString()} DZD</p>
                           <div className="flex justify-end gap-2 text-[10px] mt-1 font-bold">
                             <span className="text-tertiary" title="Accountant Share (90%)">Acc: {accShare.toLocaleString()}</span>
-                            <span className="text-primary" title="Platform Commission (10%)">Com: {platShare.toLocaleString()}</span>
+                            <span className="text-primary" title="Platform Commission (10%)">Plate: {platShare.toLocaleString()}</span>
                           </div>
                         </div>
                       ) : (

@@ -669,7 +669,20 @@
     "cogs": "تكلفة البضائع المباعة (COGS)",
     "grossProfit": "إجمالي الربح",
     "opex": "نفقات التشغيل",
-    "netIncome": "صافي الدخل"
+    "netIncome": "صافي الدخل",
+    "importSuccess": "تم استيراد الملف بنجاح",
+    "sendSuccess": "تم إرسال الطلب بنجاح",
+    "sendRequestDialogTitle": "إرسال",
+    "sendRequestDialogDesc": "املأ التفاصيل لإرسال الطلب إلى العميل.",
+    "client": "العميل",
+    "clientPlaceholder": "اسم العميل",
+    "email": "البريد الإلكتروني",
+    "message": "الرسالة",
+    "messagePlaceholder": "رسالتك...",
+    "cancel": "إلغاء",
+    "sendRequestBtn": "إرسال الطلب",
+    "adjustBudgetDesc": "قم بتعديل القيم لمحاكاة التأثير على صافي الدخل في الوقت الفعلي.",
+    "apply": "تطبيق"
   },
   "declarationsPage": {
     "title": "سير عمل التصريحات",
