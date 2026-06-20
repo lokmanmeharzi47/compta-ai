@@ -470,7 +470,7 @@ export default function Home() {
                 <div className="flex flex-col items-center gap-1 mb-6">
                   <span className="text-sm text-on-surface-variant line-through font-medium">15000 DZD</span>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-display-lg font-bold text-primary">12000 DZD</span>
+                    <span className="text-4xl font-display-lg font-bold text-primary">13500 DZD</span>
                     <span className="text-on-surface-variant text-sm">{t("per6Months")}</span>
                   </div>
                   <span className="text-xs font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full mt-2">{t("save")} 3000 DZD</span>
@@ -504,7 +504,7 @@ export default function Home() {
                 <div className="flex flex-col items-center gap-1 mb-6">
                   <span className="text-sm text-on-surface-variant line-through font-medium">30000 DZD</span>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-display-lg font-bold text-primary">21000 DZD</span>
+                    <span className="text-4xl font-display-lg font-bold text-primary">24000 DZD</span>
                     <span className="text-on-surface-variant text-sm">{t("perYear")}</span>
                   </div>
                   <span className="text-xs font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full mt-2">{t("save")} 9000 DZD</span>
