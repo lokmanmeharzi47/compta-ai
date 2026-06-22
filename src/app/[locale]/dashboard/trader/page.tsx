@@ -14,7 +14,20 @@ import {
 export default function DashboardHome() {
   const t = useTranslations("dashboardHome");
   const months = t.raw("months") as string[];
-  const chartBars = [40, 30, 60, 45, 80, 55, 75, 60, 95, 65, 90, 70];
+  const chartData = [
+    { rev: 40, exp: 30 },
+    { rev: 60, exp: 45 },
+    { rev: 80, exp: 55 },
+    { rev: 75, exp: 60 },
+    { rev: 95, exp: 65 },
+    { rev: 90, exp: 70 },
+    { rev: 100, exp: 80 },
+    { rev: 85, exp: 60 },
+    { rev: 90, exp: 75 },
+    { rev: 85, exp: 80 },
+    { rev: 95, exp: 85 },
+    { rev: 80, exp: 90 },
+  ];
 
   return (
     <div className="space-y-6">
@@ -113,23 +126,24 @@ export default function DashboardHome() {
                   <span className="text-xs font-medium">{t("revenue")}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-secondary-container"></span>
+                  <span className="w-3 h-3 rounded-full bg-[#645efb]"></span>
                   <span className="text-xs font-medium">{t("expenses")}</span>
                 </div>
               </div>
             </div>
             {/* Chart Grid */}
-            <div className="flex-1 w-full flex items-end gap-2 px-2 h-48">
-              {chartBars.map((h, i) => (
-                <div
-                  key={i}
-                  className={`flex-1 rounded-t-lg transition-all ${
-                    i % 2 === 0
-                      ? "bg-primary/20 hover:bg-primary/40"
-                      : "bg-secondary-container/20 hover:bg-secondary-container/40"
-                  }`}
-                  style={{ height: `${h}%` }}
-                ></div>
+            <div className="flex-1 w-full flex items-stretch gap-2 px-2 h-48">
+              {chartData.map((data, i) => (
+                <div key={i} className="flex-1 flex items-end gap-1">
+                  <div
+                    className="flex-1 rounded-t-sm transition-all bg-primary hover:bg-primary/80"
+                    style={{ height: `${data.rev}%` }}
+                  ></div>
+                  <div
+                    className="flex-1 rounded-t-sm transition-all bg-[#645efb] hover:bg-[#645efb]/80"
+                    style={{ height: `${data.exp}%` }}
+                  ></div>
+                </div>
               ))}
             </div>
             <div className="flex justify-between mt-4 px-2 text-[10px] text-outline font-mono-data">
